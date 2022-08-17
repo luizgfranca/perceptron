@@ -32,7 +32,7 @@ class Perceptron:
 
         for i in range(self.max_epochs):
             print(f"epoch {i}")
-
+            not_fitted = 0
             is_fitted = True
             
             for X, y in training_set:
@@ -48,6 +48,7 @@ class Perceptron:
                     self.bias += self.bias + self.learning_rate
                     #print(f"new model calibration {self.weights}; {self.bias}")
                     is_fitted = False
+                    not_fitted += 1
                     continue
 
                 # prediction = 0; objective 1
@@ -56,7 +57,10 @@ class Perceptron:
                     self.bias -= self.bias + self.learning_rate
                     #print(f"new model calibration {self.weights}; {self.bias}")
                     is_fitted = False
+                    not_fitted += 1
                     continue
+            
+            print(f'not fitted: {not_fitted}')
             
             if is_fitted == True:
                 break

@@ -1,12 +1,15 @@
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
+import loss
 
 from perceptron import Perceptron
 
 def draw_decision_surface(weights, bias, points):
     x = [np.min(points[:, 0] - 1, np.max(points[:, 0]) + 1)]
     y = [np.min(points[:, 1] - 1, np.max(points[:, 1]) + 1)]
+
+    # (y - y0) = m (x - x0)
 
     
 
@@ -19,22 +22,46 @@ c[data[:, 2] == 0] = 'red'
 c[data[:, 2] == 1] = 'blue'
 print(c)
 plt.scatter(data[:, 0], data[:, 1], color=c)
-plt.show()
+#plt.show()
 
 
 
-# perceptron = Perceptron(
-#     LEARNING_RATE, 
-#     data.shape[1] - 1, 
-#     EPOCHS
-# )
+perceptron = Perceptron(
+    LEARNING_RATE, 
+    data.shape[1] - 1, 
+    EPOCHS
+)
 
-# print()
+print()
 
-# training_set = list(zip(data[:,np.array([True, True, False])], data[:, 2]))
+training_set = list(zip(data[:,np.array([True, True, False])], data[:, 2]))
 
-# print()
+print()
 
-# log = perceptron.fit(training_set)
-# for i in log:
-#     print(i)
+log = perceptron.fit(training_set)
+for i in log:
+    print(i)
+
+
+perceptron = Perceptron(
+    LEARNING_RATE, 
+    data.shape[1] - 1, 
+    EPOCHS,
+    loss.sigmoid
+)
+
+print()
+
+inputs = data[:,np.array([True, True, False])]
+training_set = list(zip(inputs, data[:, 2]))
+
+print()
+
+log = perceptron.fit(training_set)
+for i in log:
+    print(i)
+
+logarr = np.array(log)
+print(logarr[:, 3])
+
+perceptron.test(inputs, logarr[:, 3])

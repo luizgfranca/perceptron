@@ -14,7 +14,7 @@ def draw_decision_surface(weights, bias, points):
     
 
 LEARNING_RATE = 0.01
-EPOCHS = 25
+EPOCHS = 250
 
 data = np.genfromtxt('data.csv', delimiter=',')
 c = np.empty(data[:, 2].shape, dtype=str)
@@ -23,8 +23,6 @@ c[data[:, 2] == 1] = 'blue'
 print(c)
 plt.scatter(data[:, 0], data[:, 1], color=c)
 #plt.show()
-
-
 
 perceptron = Perceptron(
     LEARNING_RATE, 
@@ -39,11 +37,9 @@ training_set = list(zip(data[:,np.array([True, True, False])], data[:, 2]))
 print()
 
 log = perceptron.fit(training_set)
-for i in log:
-    print(i)
+log_g = np.array(log)
 
-
-perceptron = Perceptron(
+softmax_perceptron = Perceptron(
     LEARNING_RATE, 
     data.shape[1] - 1, 
     EPOCHS,
@@ -57,11 +53,10 @@ training_set = list(zip(inputs, data[:, 2]))
 
 print()
 
-log = perceptron.fit(training_set)
+log = softmax_perceptron.fit(training_set)
+log_softmax = np.array(log)
 for i in log:
     print(i)
 
-logarr = np.array(log)
-print(logarr[:, 3])
-
-perceptron.test(inputs, logarr[:, 3])
+softmax_perceptron.test(inputs, log_softmax[:, 3])
+perceptron.test(inputs, log_g[:, 3])

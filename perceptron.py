@@ -68,13 +68,17 @@ class Perceptron:
 
         return training_log
 
-    def test(self, test_params, test_results):
+    def test(self, test_params, test_results, verbose=False):
         accurate_responses = 0
-
+        mean_error = self.step(test_params[0]) - test_results[0]
+        
         for X, y in zip(test_params, test_results):
             y_pred = self.step(X)
-            print(f'X {X} y {y} y_pred {y_pred}')
-            if y_pred == y:
-                accurate_responses += 1
 
-            print(f"inputs {X} : predicted={y_pred}, actual={y}")
+            if(verbose):
+                print(f"inputs {X} : predicted={y_pred}, actual={y}")
+                print(f'curr mean error: {mean_error}; curr error: {abs(y_pred - y)}')
+
+            mean_error = ( mean_error + abs(y_pred - y) ) / 2
+
+        print(f'mean error: {mean_error}')
